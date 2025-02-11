@@ -1,0 +1,2 @@
+# mailganer
+Тестовое email рассылки
