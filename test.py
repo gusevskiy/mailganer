@@ -1,4 +1,5 @@
-from redis import Redis
+import redis
 
-r = Redis(host='localhost', port=6379, decode_responses=True)
+r = redis.StrictRedis(host='172.17.0.2', port=6379, decode_responses=True)
+r.set('test', 'value')
 print(r.get('test'))

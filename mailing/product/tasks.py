@@ -1,19 +1,21 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from celery import shared_task
 from django.core.mail import send_mail
 from .models import Order
+from celery import Celery
 
 
 @shared_task
 def order_created(order_id):
-    """
-    Задание по отправке уведомления по электронной почте
-    при успешном создании заказа.
-    """
-    order = Order.objects.get(id=order_id)
-    subject = f"Order nr. {order_id}"
-    message = f"Dear {order.first_name},\n\n"\
-        f"You have successfully placed an order."\
-        f"You order ID is {order.id}."
-    mail_send = send_mail(subject, message, "vlgu@mail.ru", [order.email])
+    try:
+        order = Order.objects.get(id=order_id)
+        subject = "Order nr. {}".format(order_id)
+        message = "Dear {},\n\nYou have successfully placed an order.\nYour order ID is {}.".format(order.first_name, order.id)
+        mail_send = send_mail(subject, message, "ImRobotBender@yandex.ru", [order.email])
 
-    return mail_send
+        return mail_send
+    except Order.DoesNotExist:
+        print("Order with id {} does not exist.".format(order_id))
+        return None
