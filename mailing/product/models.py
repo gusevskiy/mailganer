@@ -18,10 +18,11 @@ class MailingEmails(models.Model):
     sent_at = models.DateTimeField(null=True, blank=True)
     opened_at = models.DateTimeField(null=True, blank=True)
     clicked_at = models.DateTimeField(null=True, blank=True)
-    opened = models.BooleanField(default=False)
-    clicked = models.BooleanField(default=False)
+    tracking_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    is_opened = models.BooleanField(default=False)
+    
 
     def __str__(self):
-        return "Данные: {} - {}".format(self.id, self.mailing)
+        return "Данные: {} - {}".format(self.id, self.email)
 
 
