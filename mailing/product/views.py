@@ -1,13 +1,18 @@
+# -*- coding: utf-8 -*-
 import pytz
 import sys
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
+import logging
 from product.models import MailingEmails
 from .forms import MailingForm
 from .tasks import order_created
 from django.shortcuts import get_object_or_404
+
+
+logger = logging.getLogger(__name__)
+
 
 def create_order(request):
     if request.method == 'POST':
@@ -27,9 +32,5 @@ def track_email_open(request, tracking_id):
     mailing_log.is_opened = True
     mailing_log.opened_at  = datetime.now(tz)
     mailing_log.save()
-
-    response = HttpResponse(content_type="image/png")
-    response['Content-Disposition'] = 'inline; filename="tracking_pixel.png"'
-    response.write(b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x89\x67\x64\x39\x00\x00\x00\x0AIDAT8\x8D\x63\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x60\x00\x00\x00\x00IEND\xaeB`\x82')
-    print("Connect")
-    return response
+    logger.info("Open email {}".format(tracking_id))
+    return HttpResponse("Вы успешно отписались от рассылки")
