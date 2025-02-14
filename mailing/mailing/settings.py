@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -157,3 +158,5 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 SITE_URL = os.getenv('SITE_URL')
+
+PATTERN = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'

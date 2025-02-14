@@ -9,6 +9,7 @@ from product.models import MailingEmails
 from .forms import MailingForm
 from .tasks import order_created
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,12 @@ def test(request):
         if form.is_valid():
             mailing = form.save()
             order_created.apply_async(args=[mailing.id])
-            return HttpResponse("Order created and email sent!")
+            return JsonResponse({'success': True})
+        else:
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [unicode(error) for error in error_list]
+            return JsonResponse({'success': False, 'errors': errors})
     else:
         form = MailingForm()
     return render(request, 'includes/test.html', {'form': form})
