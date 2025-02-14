@@ -14,6 +14,18 @@ from django.shortcuts import get_object_or_404
 logger = logging.getLogger(__name__)
 
 
+def test(request):
+    if request.method == 'POST':
+        form = MailingForm(request.POST)
+        if form.is_valid():
+            mailing = form.save()
+            order_created.apply_async(args=[mailing.id])
+            return HttpResponse("Order created and email sent!")
+    else:
+        form = MailingForm()
+    return render(request, 'includes/test.html', {'form': form})
+
+
 def create_order(request):
     if request.method == 'POST':
         form = MailingForm(request.POST)
