@@ -15,7 +15,7 @@ from django.http import JsonResponse
 logger = logging.getLogger(__name__)
 
 
-def test(request):
+def create_order(request):
     if request.method == 'POST':
         form = MailingForm(request.POST)
         if form.is_valid():
@@ -29,10 +29,10 @@ def test(request):
             return JsonResponse({'success': False, 'errors': errors})
     else:
         form = MailingForm()
-    return render(request, 'includes/test.html', {'form': form})
+    return render(request, 'includes/create_order.html', {'form': form})
 
 
-def create_order(request):
+def test(request):
     if request.method == 'POST':
         form = MailingForm(request.POST)
         if form.is_valid():
@@ -41,10 +41,13 @@ def create_order(request):
             return HttpResponse("Order created and email sent!")
     else:
         form = MailingForm()
-    return render(request, 'includes/create_order.html', {'form': form})
+    return render(request, 'includes/test.html', {'form': form})
 
 
 def track_email_open(request, tracking_id):
+    """
+    Обновление статуса открытия письма получателем
+    """
     mailing_log = get_object_or_404(MailingEmails, tracking_id=tracking_id)
     tz = pytz.timezone('UTC')
     mailing_log.is_opened = True

@@ -5,7 +5,7 @@ $(document).ready(function () {
         console.log("Форма отправлена через AJAX");
 
         $.ajax({
-            url: "{% url 'product:test' %}",
+            url: "{% url 'product:create_order' %}",
             type: "POST",
             data: $(this).serialize(),
             success: function (response) {

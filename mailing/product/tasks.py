@@ -9,6 +9,10 @@ from celery import Celery
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -20,6 +24,8 @@ def order_created(mailing_id):
 
         mailing_log = MailingEmails.objects.create(mailing=data, email=mail.email)
 
+        logging.info('Обратный url {}'.format(settings.SITE_URL))
+        
         tracking_url = "{}{}".format(settings.SITE_URL, reverse('product:track_email_open', args=[mailing_log.tracking_id]))
         tracking_url = escape(tracking_url)
 

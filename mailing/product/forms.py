@@ -29,9 +29,6 @@ class MailingForm(forms.ModelForm):
     class Meta:
         model = Mailing
         fields = ['header_email', 'body_text', 'sender_email', 'emails']
-        help_texts = {
-            'header_email': 'Заголовок'
-        }
 
     def clean_header_email(self):
         """
@@ -65,8 +62,6 @@ class MailingForm(forms.ModelForm):
         проверяет соответствие кождого элемента списка
         email адресу.
         """
-        # Преобразуем строку с email-ами в список
-        
         emails = self.cleaned_data['emails']
         if emails:
             email_list = [email.strip() for email in emails.split(',') if re.match(settings.PATTERN, email)]
