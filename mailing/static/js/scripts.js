@@ -2,10 +2,14 @@ const $ = window.$;
 $(document).ready(function () {
     $('#myForm').on('submit', function (e) {
         e.preventDefault();
+        const form = $(this);
+        const url = form.data('url');
+        console.log('test')
+        console.log('url', url);
         console.log("Форма отправлена через AJAX");
 
         $.ajax({
-            url: "{% url 'product:create_order' %}",
+            url: url,
             type: "POST",
             data: $(this).serialize(),
             success: function (response) {
