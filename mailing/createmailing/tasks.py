@@ -5,6 +5,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from .models import Mailing, MailingEmails
+from subscriber.models import Subscriber
 from celery import Celery
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -24,13 +25,11 @@ def order_created(mailing_id):
 
         mailing_log = MailingEmails.objects.create(mailing=data, email=mail.email)
 
-        logging.info('Обратный url {}'.format(settings.SITE_URL))
-        
-        tracking_url = "{}{}".format(settings.SITE_URL, reverse('product:track_email_open', args=[mailing_log.tracking_id]))
+        tracking_url = "{}{}".format(settings.SITE_URL, reverse('createmailing:track_email_open', args=[mailing_log.tracking_id]))
+        # экранирование спец символов в url
         tracking_url = escape(tracking_url)
-
-        print(tracking_url)
-
+        
+        logging.info('Обратный url {}'.format(tracking_url))
 
         html_message = render_to_string(
             'patterns/form_one.html', {

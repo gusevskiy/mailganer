@@ -17,6 +17,7 @@ $(document).ready(function () {
                 if (response.success) {
                     console.log("Форма прошла валидацию, закрываем модальное окно");
                     $('#exampleModal').modal('hide');
+                    form[0].reset(); 
                 } else {
                     console.log("Ошибки валидации:", response.errors);
                     let errorMessage = "";

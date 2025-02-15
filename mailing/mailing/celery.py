@@ -16,7 +16,7 @@ app.autodiscover_tasks(["mailing"])
 #     CELERY_RESULT_BACKEND=CELERY_RESULT_BACKEND,
 #     CELERYBEAT_SCHEDULE={
 #         'get_categories_every_one_minutes': {
-#             'task': 'product.tasks.order_created',
+#             'task': 'createmailing.tasks.order_created',
 #             'schedule': crontab(minute='*/1'),
 #         },
 #     },

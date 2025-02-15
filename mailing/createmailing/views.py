@@ -5,7 +5,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import logging
-from product.models import MailingEmails
+from createmailing.models import MailingEmails
 from .forms import MailingForm
 from .tasks import order_created
 from django.shortcuts import get_object_or_404
@@ -20,6 +20,8 @@ def create_order(request):
         form = MailingForm(request.POST)
         if form.is_valid():
             mailing = form.save()
+            print(mailing.__dict__)
+            # Создаем задачу
             order_created.apply_async(args=[mailing.id])
             return JsonResponse({'success': True})
         else:

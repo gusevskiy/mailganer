@@ -25,7 +25,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'product',
+    'createmailing',
+    'subscriber',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

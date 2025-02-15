@@ -25,7 +25,7 @@
         </div>
         <!-- modal body -->
         <div class="modal-body">
-          <form id="myForm" method="post" data-url="{% url 'product:create_order' %}">
+          <form id="myForm" method="post" data-url="{% url 'createmailing:create_order' %}">
             {% csrf_token %}
             {{ form.as_table }}
             <button type="submit">Create Order</button>

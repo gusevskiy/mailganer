@@ -2,7 +2,13 @@
 from django import forms
 import re
 from .models import Mailing, MailingEmails
+from subscriber.models import Subscriber
 from django.conf import settings
+import logging
+
+
+logger = logging.getLogger(__name__)
+
 
 class MailingForm(forms.ModelForm):
     header_email = forms.CharField(
@@ -17,18 +23,27 @@ class MailingForm(forms.ModelForm):
     )
     sender_email = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
-        label="Отправитель данного письма",
+        label="Email для ответа.",
         required=False
     )
     emails = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
-        label="Введите email-ы через запятую",
+        label="Email-ы всех подписчиков.",
         required=False
     )
 
     class Meta:
         model = Mailing
         fields = ['header_email', 'body_text', 'sender_email', 'emails']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Подставляем emails в форму, их сразу видно.
+        """
+        super(MailingForm, self).__init__(*args, **kwargs)
+        if not self.instance.pk:
+            subscriber_emails = Subscriber.objects.values_list('email', flat=True)
+            self.fields['emails'].initial = ', '.join(subscriber_emails)
 
     def clean_header_email(self):
         """
@@ -64,7 +79,13 @@ class MailingForm(forms.ModelForm):
         """
         emails = self.cleaned_data['emails']
         if emails:
-            email_list = [email.strip() for email in emails.split(',') if re.match(settings.PATTERN, email)]
+            email_list = []
+            for email in emails.split(','):
+                email = email.strip()
+                match = re.match(settings.PATTERN, email)
+                if match:
+                    email_list.append(email)
+            logging.info("list emails: {}".format(email_list))
             return email_list
         raise forms.ValidationError("Укажите адреса emailов на которые нужно отправить ваше письмо.")
     
