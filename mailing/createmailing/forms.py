@@ -5,7 +5,7 @@ from .models import Mailing, MailingEmails
 from subscriber.models import Subscriber
 from django.conf import settings
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 
 
@@ -19,7 +19,7 @@ class MailingForm(forms.ModelForm):
         required=False,
     )
     body_text = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows':5}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows':3}),
         label="Текст письма",
         required=False
     )
@@ -29,7 +29,7 @@ class MailingForm(forms.ModelForm):
         required=False
     )
     emails = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         label="Email-ы всех подписчиков.",
         required=False
     )
@@ -97,17 +97,18 @@ class MailingForm(forms.ModelForm):
         raise forms.ValidationError("Укажите адреса emailов на которые нужно отправить ваше письмо.")
     
     def clean_date_completion(self):
-        """"""
+        """Проверяет на прошедшее время"""
         data = self.cleaned_data['date_completion']
         if data:
+            # Преобразуем дату в осведомленное время, если она наивная
+            # (наивная это без timezone, осведомленное с timezone)
+            if timezone.is_naive(data):
+                data = timezone.make_aware(data, timezone.get_current_timezone())
              # Проверка на уже прошедшую дату
             if data < timezone.now():
                 raise forms.ValidationError('Дата выполнения уже прошла,измените время.')
-            # Преобразуем дату в осведомленное время, если она наивная
-            if timezone.is_naive(data):
-                data = timezone.make_aware(data, timezone.get_current_timezone())
             return data
-        raise forms.ValidationError("Выбирите дату и время испонения рассылки")
+        return None
     
     def save(self, commit=True):
         mailing = super(MailingForm, self).save(commit=False)

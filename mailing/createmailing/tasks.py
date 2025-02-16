@@ -25,18 +25,25 @@ def order_created(mailing_id):
 
         mailing_log = MailingEmails.objects.create(mailing=data, email=mail.email)
 
-        tracking_url = "{}{}".format(settings.SITE_URL, reverse('createmailing:track_email_open', args=[mailing_log.tracking_id]))
+        tracking_url_subscribed = "{}{}".format(settings.SITE_URL, reverse('createmailing:track_email_subscribed', args=[mailing_log.tracking_id]))
         # экранирование спец символов в url
-        tracking_url = escape(tracking_url)
+        tracking_url_subscribed = escape(tracking_url_subscribed)
+
+        tracking_url_unsubscribed = "{}{}".format(settings.SITE_URL, reverse('createmailing:track_email_unsubscribed', args=[mailing_log.tracking_id]))
+        # экранирование спец символов в url
+        tracking_url_unsubscribed = escape(tracking_url_unsubscribed)
+
+
         
-        logging.info('Обратный url {}'.format(tracking_url))
+        # logging.info('Обратный url {}'.format(tracking_url))
 
         html_message = render_to_string(
             'patterns/form_one.html', {
             'header_email': data.header_email,
             'body_text': data.body_text,
             'sender_email': data.sender_email,
-            'tracking_url': tracking_url,
+            'tracking_url_subscribed': tracking_url_subscribed,
+            'tracking_url_unsubscribed': tracking_url_unsubscribed,
             }
         )
         send_mail(
