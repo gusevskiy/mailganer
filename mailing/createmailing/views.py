@@ -5,12 +5,12 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import logging
+from django.utils import timezone
 from createmailing.models import MailingEmails
 from .forms import MailingForm
 from .tasks import order_created
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
-
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,7 @@ def create_order(request):
         form = MailingForm(request.POST)
         if form.is_valid():
             date_completion = form.cleaned_data['date_completion']
-            logging.info('date_completion {}'.format(date_completion))
+     
             mailing = form.save()
             # Создаем задачу
             order_created.apply_async(
