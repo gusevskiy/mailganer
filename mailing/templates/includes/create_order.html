@@ -3,38 +3,36 @@
 {% block content %}
 <div class="container">
   <div class="card">
-    <h2 class="text-center">Создать рассылку</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <h2 class="text-center">Создать рассылку подписчикам</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CreateModal">
       <div class="card ms-5 me-5 mb-5 mt-5">
         <p>Введи заголовок</p>
         <p>Email отправителя</p>
         <p>Текст письма</p>
-        <p>Email адресса через запятую</p>
       </div>
     </button>
   </div>
 
   <!-- modal window -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+  <div class="modal fade" id="CreateModal" tabindex="-1" aria-labelledby="CreateModalLabel">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <!-- modal header -->
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Заполните письмо</h1>
+          <h1 class="modal-title fs-5" id="CreateModalLabel">Заполните письмо</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <!-- modal body -->
         <div class="modal-body">
-          <form id="myForm" method="post" data-url="{% url 'createmailing:create_order' %}">
+          <form id="InputForm" method="post" data-url="{% url 'createmailing:create_order' %}">
             {% csrf_token %}
             {{ form.as_table }}
-            <button type="submit">Create Order</button>
           </form>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="InputForm" class="btn btn-primary">Create Order</button>
         </div>
         <!-- modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

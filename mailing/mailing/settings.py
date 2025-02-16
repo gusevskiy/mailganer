@@ -117,7 +117,7 @@ LOGGING = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'  # Для UTC+3
 
 USE_I18N = True
 
@@ -147,6 +147,9 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
+CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_ENABLE_UTC = False  # Отключает автоматическое приведение к UTC
+
 BROKER_URL = 'redis://localhost:6379/0'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -161,3 +164,8 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 SITE_URL = os.getenv('SITE_URL')
 
 PATTERN = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%dT%H:%M',  # Формат для datetime-local (например: 2025-02-16T14:30)
+    '%d.%m.%Y, %H:%M',  # Формат, который вы хотите поддерживать (например: 16.02.2025, 02:39)
+]

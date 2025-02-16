@@ -4,10 +4,11 @@ from django.db import models
 
 
 class Mailing(models.Model):
-    header_email = models.CharField(max_length=255)
-    body_text = models.TextField()
-    sender_email = models.EmailField()
+    header_email = models.CharField(max_length=255, blank=False, null=False)
+    body_text = models.TextField(blank=False, null=False)
+    sender_email = models.EmailField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    date_completion = models.DateTimeField(blank=False, null=False)
     
     def __str__(self):
         return "Рассылка: {} - {} {}".format(self.id, self.sender_email, self.created_at)

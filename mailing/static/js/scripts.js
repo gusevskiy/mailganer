@@ -1,6 +1,6 @@
 const $ = window.$;
 $(document).ready(function () {
-    $('#myForm').on('submit', function (e) {
+    $('#InputForm').on('submit', function (e) {
         e.preventDefault();
         const form = $(this);
         const url = form.data('url');
@@ -16,7 +16,7 @@ $(document).ready(function () {
                 console.log("Ответ сервера:", response);
                 if (response.success) {
                     console.log("Форма прошла валидацию, закрываем модальное окно");
-                    $('#exampleModal').modal('hide');
+                    $('#CreateModal').modal('hide');
                     form[0].reset(); 
                 } else {
                     console.log("Ошибки валидации:", response.errors);

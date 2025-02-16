@@ -5,6 +5,8 @@ from .models import Mailing, MailingEmails
 from subscriber.models import Subscriber
 from django.conf import settings
 import logging
+from datetime import datetime
+from django.utils import timezone
 
 
 logger = logging.getLogger(__name__)
@@ -23,7 +25,7 @@ class MailingForm(forms.ModelForm):
     )
     sender_email = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
-        label="Email для ответа.",
+        label="Email или телефон для обратной связи.",
         required=False
     )
     emails = forms.CharField(
@@ -31,10 +33,16 @@ class MailingForm(forms.ModelForm):
         label="Email-ы всех подписчиков.",
         required=False
     )
+    date_completion = forms.DateTimeField(
+        widget=forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', }),
+        label="Дата и время",
+        required=False,
+        input_formats=['%Y-%m-%dT%H:%M'],
+    )
 
     class Meta:
         model = Mailing
-        fields = ['header_email', 'body_text', 'sender_email', 'emails']
+        fields = ['header_email', 'body_text', 'sender_email', 'emails','date_completion']
 
     def __init__(self, *args, **kwargs):
         """
@@ -70,7 +78,6 @@ class MailingForm(forms.ModelForm):
                 return data
             raise forms.ValidationError('Введите коректный адрес')
 
-
     def clean_emails(self):
         """
         Валидатор (вызывается автоматически)
@@ -88,6 +95,17 @@ class MailingForm(forms.ModelForm):
             logging.info("list emails: {}".format(email_list))
             return email_list
         raise forms.ValidationError("Укажите адреса emailов на которые нужно отправить ваше письмо.")
+    
+    def clean_date_completion(self):
+        data = self.cleaned_data['date_completion']
+        if data:
+            logger.info("Дата до изменения: %s", data)
+            # Преобразуем дату в осведомленное время, если она наивная
+            if timezone.is_naive(data):
+                data = timezone.make_aware(data, timezone.get_current_timezone())
+            logger.info("Дата после изменения: %s", data)
+            return data
+        raise forms.ValidationError("Выбирите даты испонения рассылки")
     
     def save(self, commit=True):
         mailing = super(MailingForm, self).save(commit=False)

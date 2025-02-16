@@ -19,10 +19,14 @@ def create_order(request):
     if request.method == 'POST':
         form = MailingForm(request.POST)
         if form.is_valid():
+            date_completion = form.cleaned_data['date_completion']
+            logging.info('date_completion {}'.format(date_completion))
             mailing = form.save()
-            print(mailing.__dict__)
             # Создаем задачу
-            order_created.apply_async(args=[mailing.id])
+            order_created.apply_async(
+                args=[mailing.id],
+                eta=date_completion
+            )
             return JsonResponse({'success': True})
         else:
             errors = {}
