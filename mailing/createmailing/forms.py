@@ -23,11 +23,6 @@ class MailingForm(forms.ModelForm):
         label="Текст письма",
         required=False
     )
-    # sender_email = forms.CharField(
-    #     widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
-    #     label="Email или телефон для обратной связи.",
-    #     required=False
-    # )
     emails = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         label="Email-ы всех подписчиков.",
@@ -71,13 +66,6 @@ class MailingForm(forms.ModelForm):
             return data
         raise forms.ValidationError("Заполните текст письма.")
     
-    def clean_sender_email(self):
-        data = self.cleaned_data['sender_email']
-        if data:
-            if re.match(settings.PATTERN, data):
-                return data
-            raise forms.ValidationError('Введите коректный адрес')
-
     def clean_emails(self):
         """
         Валидатор (вызывается автоматически)

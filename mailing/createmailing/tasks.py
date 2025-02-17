@@ -41,7 +41,6 @@ def order_created(mailing_id):
             'patterns/form_one.html', {
             'header_email': data.header_email,
             'body_text': data.body_text,
-            # 'sender_email': data.sender_email,
             'tracking_url_subscribed': tracking_url_subscribed,
             'tracking_url_unsubscribed': tracking_url_unsubscribed,
             }

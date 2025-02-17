@@ -10,7 +10,7 @@ class Mailing(models.Model):
     date_completion = models.DateTimeField(blank=False, null=False, verbose_name='Дата исполнения(запуска) рассылки')
     
     def __str__(self):
-        return "Рассылка: {} - {} {}".format(self.id, self.sender_email, self.created_at)
+        return "Рассылка: {} {}".format(self.created_at, self.date_completion)
 
 class MailingEmails(models.Model):
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, related_name='mailing_emails')
