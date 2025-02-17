@@ -20,20 +20,16 @@ def create_order(request):
         form = MailingForm(request.POST)
         if form.is_valid():
             date_completion = form.cleaned_data['date_completion']
-     
+
             mailing = form.save()
 
             if date_completion:
                 # Создаем отложенную задачу
-                order_created.apply_async(
-                    args=[mailing.id],
-                    eta=date_completion
-                )
+                order_created.apply_async(args=[mailing.id],
+                                          eta=date_completion)
             else:
                 # Создаем задачу с исполнением сейчас
-                order_created.apply_async(
-                    args=[mailing.id]
-                )
+                order_created.apply_async(args=[mailing.id])
             return JsonResponse({'success': True})
         else:
             errors = {}
@@ -65,12 +61,13 @@ def track_email_subscribed(request, tracking_id):
     mailing_log = get_object_or_404(MailingEmails, tracking_id=tracking_id)
     tz = pytz.timezone('UTC')
     mailing_log.subscribed = True
-    mailing_log.opened_at  = datetime.now(tz)
+    mailing_log.opened_at = datetime.now(tz)
     mailing_log.save()
     logger.info("Отписались email {}".format(tracking_id))
-    return HttpResponse("Все подробности мы вам вышлем позже, на этот же адрес.")
+    return HttpResponse(
+        "Все подробности мы вам вышлем позже, на этот же адрес.")
 
-    
+
 def track_email_unsubscribed(request, tracking_id):
     """
     Обновление статуса открытия письма получателем
@@ -79,7 +76,7 @@ def track_email_unsubscribed(request, tracking_id):
     mailing_log = get_object_or_404(MailingEmails, tracking_id=tracking_id)
     tz = pytz.timezone('UTC')
     mailing_log.unsubscribed = True
-    mailing_log.opened_at  = datetime.now(tz)
+    mailing_log.opened_at = datetime.now(tz)
     mailing_log.save()
     logger.info("Отписались email {}".format(tracking_id))
     return HttpResponse("Вы успешно отписались от рассылки")

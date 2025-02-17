@@ -11,30 +11,81 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Mailing',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('header_email', models.CharField(max_length=255, verbose_name=b'\xd0\x97\xd0\xb0\xd0\xb3\xd0\xbe\xd0\xbb\xd0\xbe\xd0\xb2\xd0\xbe\xd0\xba \xd0\xbf\xd0\xb8\xd1\x81\xd1\x8c\xd0\xbc\xd0\xb0')),
-                ('body_text', models.TextField(verbose_name=b'\xd0\xa2\xd0\xb5\xd0\xbb\xd0\xbe \xd0\xbf\xd0\xb8\xd1\x81\xd1\x8c\xd0\xbc\xd0\xb0')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name=b'\xd0\x94\xd0\xb0\xd1\x82\xd0\xb0 \xd1\x81\xd0\xbe\xd0\xb7\xd0\xb4\xd0\xb0\xd0\xbd\xd0\xb8\xd1\x8f \xd1\x80\xd0\xb0\xd1\x81\xd1\x81\xd1\x8b\xd0\xbb\xd0\xba\xd0\xb8')),
-                ('date_completion', models.DateTimeField(verbose_name=b'\xd0\x94\xd0\xb0\xd1\x82\xd0\xb0 \xd0\xb8\xd1\x81\xd0\xbf\xd0\xbe\xd0\xbb\xd0\xbd\xd0\xb5\xd0\xbd\xd0\xb8\xd1\x8f(\xd0\xb7\xd0\xb0\xd0\xbf\xd1\x83\xd1\x81\xd0\xba\xd0\xb0) \xd1\x80\xd0\xb0\xd1\x81\xd1\x81\xd1\x8b\xd0\xbb\xd0\xba\xd0\xb8')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
+                ('header_email',
+                 models.CharField(
+                     max_length=255,
+                     verbose_name=
+                     b'\xd0\x97\xd0\xb0\xd0\xb3\xd0\xbe\xd0\xbb\xd0\xbe\xd0\xb2\xd0\xbe\xd0\xba \xd0\xbf\xd0\xb8\xd1\x81\xd1\x8c\xd0\xbc\xd0\xb0'
+                 )),
+                ('body_text',
+                 models.TextField(
+                     verbose_name=
+                     b'\xd0\xa2\xd0\xb5\xd0\xbb\xd0\xbe \xd0\xbf\xd0\xb8\xd1\x81\xd1\x8c\xd0\xbc\xd0\xb0'
+                 )),
+                ('created_at',
+                 models.DateTimeField(
+                     auto_now_add=True,
+                     verbose_name=
+                     b'\xd0\x94\xd0\xb0\xd1\x82\xd0\xb0 \xd1\x81\xd0\xbe\xd0\xb7\xd0\xb4\xd0\xb0\xd0\xbd\xd0\xb8\xd1\x8f \xd1\x80\xd0\xb0\xd1\x81\xd1\x81\xd1\x8b\xd0\xbb\xd0\xba\xd0\xb8'
+                 )),
+                ('date_completion',
+                 models.DateTimeField(
+                     verbose_name=
+                     b'\xd0\x94\xd0\xb0\xd1\x82\xd0\xb0 \xd0\xb8\xd1\x81\xd0\xbf\xd0\xbe\xd0\xbb\xd0\xbd\xd0\xb5\xd0\xbd\xd0\xb8\xd1\x8f(\xd0\xb7\xd0\xb0\xd0\xbf\xd1\x83\xd1\x81\xd0\xba\xd0\xb0) \xd1\x80\xd0\xb0\xd1\x81\xd1\x81\xd1\x8b\xd0\xbb\xd0\xba\xd0\xb8'
+                 )),
             ],
         ),
         migrations.CreateModel(
             name='MailingEmails',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id',
+                 models.AutoField(auto_created=True,
+                                  primary_key=True,
+                                  serialize=False,
+                                  verbose_name='ID')),
                 ('email', models.EmailField(max_length=254)),
-                ('subscribed', models.BooleanField(default=False, verbose_name=b'\xd0\x9f\xd0\xbe\xd0\xb4\xd0\xbf\xd0\xb8\xd1\x81\xd0\xb0\xd0\xbb\xd1\x81\xd1\x8f')),
-                ('unsubscribed', models.BooleanField(default=False, verbose_name=b'\xd0\x9e\xd1\x82\xd0\xbf\xd0\xb8\xd1\x81\xd0\xb0\xd0\xbb\xd1\x81\xd1\x8f')),
-                ('opened_at', models.DateTimeField(blank=True, null=True, verbose_name=b'\xd0\x9a\xd0\xbe\xd0\xb3\xd0\xb4\xd0\xb0 \xd0\xbe\xd1\x82\xd0\xba\xd1\x80\xd1\x8b\xd1\x82\xd0\xbe')),
-                ('tracking_id', models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name=b'\xd1\x82\xd1\x80\xd0\xb5\xd0\xba \xd0\xbd\xd0\xbe\xd0\xbc\xd0\xb5\xd1\x80 \xd0\xbf\xd0\xbe\xd1\x87\xd1\x82\xd1\x8b')),
-                ('mailing', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mailing_emails', to='createmailing.Mailing')),
+                ('subscribed',
+                 models.BooleanField(
+                     default=False,
+                     verbose_name=
+                     b'\xd0\x9f\xd0\xbe\xd0\xb4\xd0\xbf\xd0\xb8\xd1\x81\xd0\xb0\xd0\xbb\xd1\x81\xd1\x8f'
+                 )),
+                ('unsubscribed',
+                 models.BooleanField(
+                     default=False,
+                     verbose_name=
+                     b'\xd0\x9e\xd1\x82\xd0\xbf\xd0\xb8\xd1\x81\xd0\xb0\xd0\xbb\xd1\x81\xd1\x8f'
+                 )),
+                ('opened_at',
+                 models.DateTimeField(
+                     blank=True,
+                     null=True,
+                     verbose_name=
+                     b'\xd0\x9a\xd0\xbe\xd0\xb3\xd0\xb4\xd0\xb0 \xd0\xbe\xd1\x82\xd0\xba\xd1\x80\xd1\x8b\xd1\x82\xd0\xbe'
+                 )),
+                ('tracking_id',
+                 models.UUIDField(
+                     default=uuid.uuid4,
+                     editable=False,
+                     unique=True,
+                     verbose_name=
+                     b'\xd1\x82\xd1\x80\xd0\xb5\xd0\xba \xd0\xbd\xd0\xbe\xd0\xbc\xd0\xb5\xd1\x80 \xd0\xbf\xd0\xbe\xd1\x87\xd1\x82\xd1\x8b'
+                 )),
+                ('mailing',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   related_name='mailing_emails',
+                                   to='createmailing.Mailing')),
             ],
         ),
     ]
