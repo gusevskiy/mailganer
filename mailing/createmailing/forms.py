@@ -23,11 +23,11 @@ class MailingForm(forms.ModelForm):
         label="Текст письма",
         required=False
     )
-    sender_email = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
-        label="Email или телефон для обратной связи.",
-        required=False
-    )
+    # sender_email = forms.CharField(
+    #     widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
+    #     label="Email или телефон для обратной связи.",
+    #     required=False
+    # )
     emails = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         label="Email-ы всех подписчиков.",
@@ -42,7 +42,7 @@ class MailingForm(forms.ModelForm):
 
     class Meta:
         model = Mailing
-        fields = ['header_email', 'body_text', 'sender_email', 'emails','date_completion']
+        fields = ['header_email', 'body_text', 'emails','date_completion']
 
     def __init__(self, *args, **kwargs):
         """
@@ -97,7 +97,11 @@ class MailingForm(forms.ModelForm):
         raise forms.ValidationError("Укажите адреса emailов на которые нужно отправить ваше письмо.")
     
     def clean_date_completion(self):
-        """Проверяет на прошедшее время"""
+        """
+        Проверяет на прошедшее время
+        Если время не указано возвращает текущие + 10 секунд
+        (это для того чтобы в БД записалось время создания и время исполнения)
+        """
         data = self.cleaned_data['date_completion']
         if data:
             # Преобразуем дату в осведомленное время, если она наивная
@@ -108,9 +112,12 @@ class MailingForm(forms.ModelForm):
             if data < timezone.now():
                 raise forms.ValidationError('Дата выполнения уже прошла,измените время.')
             return data
-        return None
+        return datetime.now() + timedelta(seconds=10)
     
     def save(self, commit=True):
+        """
+        Добавляем к каждой рассылке, все входящие в нее emails
+        """
         mailing = super(MailingForm, self).save(commit=False)
         if commit:
             mailing.save()

@@ -6,7 +6,6 @@ from django.db import models
 class Mailing(models.Model):
     header_email = models.CharField(max_length=255, blank=False, null=False, verbose_name='Заголовок письма')
     body_text = models.TextField(blank=False, null=False,  verbose_name='Тело письма')
-    sender_email = models.EmailField(blank=False, null=False,verbose_name='Отправитель письма')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания рассылки')
     date_completion = models.DateTimeField(blank=False, null=False, verbose_name='Дата исполнения(запуска) рассылки')
     

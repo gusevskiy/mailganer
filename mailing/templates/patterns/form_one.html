@@ -46,15 +46,11 @@
             <h1>{{ header_email }}</h1>
             <img src="{{ tracking_url }}" alt="Tracking Pixel" width="1" height="1" />
             <p>{{ body_text }}</p>
-            <p>Email для ответа:<br>
-                <a href="{{ tracking_url }}"
-                    onclick="window.location.href='mailto:{{ sender_email }}'; return false;">{{ sender_email }}</a>
-            </p>
+            <a href="{{ tracking_url_subscribed }}">Узнать подробности</a>
             <div class="footer">
                 <li>Это письмо отправлено автоматически.</li>
                 <li>Пожалуйста, не отвечайте на него.</li>
-                <li>Отправитель указан выше!</li>
-                <a href="{{ tracking_url_unsubscribed }}">Отписаться</a>
+                <a href="{{ tracking_url_unsubscribed }}">Отписатьсяот рассылки</a>
             </div>
         </div>
     </body>

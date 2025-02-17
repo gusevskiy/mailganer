@@ -60,7 +60,7 @@ def test(request):
 def track_email_subscribed(request, tracking_id):
     """
     Обновление статуса открытия письма получателем
-    те если получатель открыл письмо и нажал подписаться
+    те если получатель открыл письмо и нажал узнать подробности
     """
     mailing_log = get_object_or_404(MailingEmails, tracking_id=tracking_id)
     tz = pytz.timezone('UTC')
@@ -68,7 +68,7 @@ def track_email_subscribed(request, tracking_id):
     mailing_log.opened_at  = datetime.now(tz)
     mailing_log.save()
     logger.info("Отписались email {}".format(tracking_id))
-    return HttpResponse("Вы успешно подписались на рассылки")
+    return HttpResponse("Все подробности мы вам вышлем позже, на этот же адрес.")
 
     
 def track_email_unsubscribed(request, tracking_id):
